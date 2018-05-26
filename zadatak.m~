@@ -51,41 +51,27 @@ image2 = imread('galaxy.tif');
 
 %Konverzija u grayscale
 image2=rgb2gray(image2);
-
-%Prikaz slike
 figure
 colormap gray
 imagesc(image2)
 colorbar, axis equal, axis tight
 title('Originalna slika');
-
-%Dodavanje šuma slici
 noise=imnoise(image2, 'gaussian', E/255, V/255);
-
-%Prikaz ošumljene slike
 figure
 colormap gray
 imagesc(noise)
 colorbar, axis equal, axis tight
 title('Slika sa dodanim Gaussovim šumom')
-
-%Izrada matrice karakteristika low-pass filtra N-tog reda
 h2=1/(N^2)*ones(N);
-
-%Filtriranje slike filtrom h2
 filtered = conv2(double(noise), h2, 'same');
-
-%Prikaz filtrirane slike
 figure
 colormap gray
 imagesc(filtered)
 colorbar, axis equal, axis tight
 title('Slika nakon filtriranja šuma')
-
-%Ekstrakcija vrijednosti šuma iz slike
+ 
 A=noise-image2;
 
-%Prikaz histograma
 figure
 subplot(3,1,1)
 hist(double(image2(:)), 50)
@@ -104,8 +90,6 @@ title('Histogram ošumljene slike')
 xlim([0, 255])
 xlabel('Vrijednost pixela slike')
 ylabel('Broj pixela u binu')
-
-
 % Detekcija rubova
 % 
 %     Odabrati jednu satelitsku snimku grada (npr. koristeći Google Maps)
