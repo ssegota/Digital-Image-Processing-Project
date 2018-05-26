@@ -1,13 +1,14 @@
-% %prvi zadatak
-% % Filtracija slike
-% % 
-% %     Učitati sliku po izboru
-% %     Kreirati impulsni odziv visokopropusnog filtra (poglavlje 4.6.1 – Basic Highpass Filtering)
-% %     Filtrirati sliku s dobivenim filtrom
-% %     Prikazati dobivenu sliku
-%
+%--------------------------------------------------------------------------
+% Prvi Zadatak
+%--------------------------------------------------------------------------
+% Filtracija slike
+% 
+%     Učitati sliku po izboru
+%     Kreirati impulsni odziv visokopropusnog filtra (poglavlje 4.6.1 – Basic Highpass Filtering)
+%     Filtrirati sliku s dobivenim filtrom
+%     Prikazati dobivenu sliku
 
-% Učitavanje i orikaz slike
+% Učitavanje i prikaz slike
 image1 = imread('sprites.tif');
 figure
 colormap gray
@@ -18,74 +19,79 @@ title("Originalna slika")
 % Napisati karakteristiku high-pass filtra kao matricu
 h = 1/9 * [-1 -1 -1; -1 8 -1; -1 -1 -1];
 
-%Filtrirati sliku filtrom
+% Filtrirati sliku filtrom
 result1 = imfilter(image1, h, 'same');
 
-%Prikaz filtrirane slike
+% Prikaz filtrirane slike
 figure
 colormap gray
 imagesc(result1)
 colorbar, axis equal, axis tight
 title("Slika filtrirana sa high pass filtrom")
 
-% %drugi zadatak
-% % Šum
-% % 
-% %     Učitati sliku po želji
-% %     Originalnoj slici dodati Gaussov šum srednje vrijednosti 10 i varijance 0.1.
-% %     Prikazati sliku sa šumom.
-% %     Prikazati histogram a) orignalne slike, b) histogram šuma i c) histogram slike sa šumom.
-% %     Odabrati neku od metoda za uklanjanje šuma i primjeniti je na zašumljenoj slici.
+
+
+%--------------------------------------------------------------------------
+% Drugi Zadatak
+%--------------------------------------------------------------------------
+% Šum
 % 
+%     Učitati sliku po želji
+%     Originalnoj slici dodati Gaussov šum srednje vrijednosti 10 i varijance 0.1.
+%     Prikazati sliku sa šumom.
+%     Prikazati histogram a) orignalne slike, b) histogram šuma i c) histogram slike sa šumom.
+%     Odabrati neku od metoda za uklanjanje šuma i primjeniti je na zašumljenoj slici.
 
-%Varijable
-%Očekivanje Gaussovog šuma
-E=10.0
-%Varijanca Gaussova šuma
-V=0.1
-%Stupanj filtra
-N=2
+% Varijable
+% Očekivanje Gaussovog šuma
+E = 10.0
+% Varijanca Gaussova šuma
+V = 0.1
+% Stupanj filtra
+N = 2
 
-%Učitavanje slike
+% Učitavanje slike
 image2 = imread('galaxy.tif');
 
-%Konverzija u grayscale
-image2=rgb2gray(image2);
+% Konverzija u grayscale
+image2 = rgb2gray(image2);
 
-%Prikaz slike
+% Prikaz slike
 figure
 colormap gray
 imagesc(image2)
 colorbar, axis equal, axis tight
 title('Originalna slika');
 
-%Dodavanje šuma slici
-noise=imnoise(image2, 'gaussian', E/255, V/255);
+% Dodavanje šuma slici
+noise = imnoise(image2, 'gaussian', E/255, V/255);
 
-%Prikaz ošumljene slike
+% Prikaz ošumljene slike
 figure
 colormap gray
 imagesc(noise)
 colorbar, axis equal, axis tight
 title('Slika sa dodanim Gaussovim šumom')
 
-%Izrada matrice karakteristika low-pass filtra N-tog reda
-h2=1/(N^2)*ones(N);
+% Izrada matrice karakteristika low-pass filtra N-tog reda
+h2 = 1/(N^2)*ones(N);
 
-%Filtriranje slike filtrom h2
+% Filtriranje slike filtrom h2
 filtered = conv2(double(noise), h2, 'same');
 
-%Prikaz filtrirane slike
+% Prikaz filtrirane slike
 figure
 colormap gray
 imagesc(filtered)
 colorbar, axis equal, axis tight
 title('Slika nakon filtriranja šuma')
 
-%Ekstrakcija vrijednosti šuma iz slike
-A=noise-image2;
+% Ekstrakcija vrijednosti šuma iz slike
+% Šum je aditivni pa oduzimanjem slike bez šuma od ošumljene slike dobivamo
+% šum
+A = noise-image2;
 
-%Prikaz histograma
+% Prikaz histograma
 figure
 subplot(3,1,1)
 hist(double(image2(:)), 50)
@@ -106,6 +112,10 @@ xlabel('Vrijednost pixela slike')
 ylabel('Broj pixela u binu')
 
 
+
+%--------------------------------------------------------------------------
+% Treći zadatak
+%--------------------------------------------------------------------------
 % Detekcija rubova
 % 
 %     Odabrati jednu satelitsku snimku grada (npr. koristeći Google Maps)
@@ -113,31 +123,65 @@ ylabel('Broj pixela u binu')
 %     Sliku pretvoriti u crno-bijelu, ali uz pažljiv odabir rubne vrijednosti histograma tako da cesta ostane dobro naglašena
 %     Po volji kombinirajući funkcije dilatacije i erozije dodatno naglasiti ceste na slici.
 
-% image3=imread('city2.tif');
-% figure
-% imagesc(image3)
-% image3=rgb2gray(image3);
-% figure
-% imagesc(image3)
-% Gx = [-1 -2 -1; 0 0 0; 1 2 1]
-% Gy = [-1 0 1; -2 0 2; -1 0 1]
-% 
-% Y=conv2(image3, Gx);
-% Y=conv2(image3, Gy);
-% 
-% figure
-% imagesc(Y)
-% A=graythresh(Y);
-% Y = Y > 200;
-% figure
-% imagesc(Y)
-% 
-% line=strel('line', 5, 90);
-% line2=strel('line', 5, 0);
-% Y = imdilate(Y, line);
-% Y = imdilate(Y, line2);
-% Y=imerode(Y, line);
-% Y=imerode(Y, line2);
-% 
-% figure
-% imagesc(Y)
+% Učitavanje i prikaz slike
+image3=imread('city_crossroads.tif');
+figure
+imagesc(image3)
+title('Originalna slika')
+axis tight, axis equal
+
+% Konverzija u grayscale i prikaz grayscale slike
+image3=rgb2gray(image3);
+figure
+colormap gray
+imagesc(image3)
+title('Grayscale slika')
+axis equal, axis tight
+colorbar
+
+% Matrice odziva filtra za edge detection
+% Roberts
+Gx = [-1 0; 0 1]
+Gy = [0 -1; 1 0]
+
+% Filtriranje slike filterom za edge detection
+Y = conv2(image3, Gx, 'same');
+Y = conv2(image3, Gy, 'same');
+
+
+% Prikaz filtrirane slike
+figure
+colormap gray
+imagesc(Y)
+title('Slika filtrirana Robertsovim operatorima')
+axis equal, axis tight
+colorbar
+
+% Konverzija u binarnu sliku i prikaz iste
+Y = 20 < Y;
+figure
+colormap gray
+imagesc(Y)
+title('Binarna slika')
+axis equal, axis tight
+colorbar
+
+% Strukturni elementi
+strel1 = strel('line', 3, 90)
+strel2 = strel('line', 3, 0)
+strel3 = strel('line', 2, 90)
+strel4 = strel('line', 2, 0)
+
+% Erozija i dilatacija slike strukturnim elemntima
+Y = imclose(Y, strel2);
+Y = imclose(Y, strel1);
+Y = imdilate(Y, strel3);
+Y = imdilate(Y, strel4);
+
+% Prikaz finalne slike
+figure
+imagesc(Y)
+colormap gray
+title('Finalna slika dobivena erozijom i dilatacijom')
+axis equal, axis tight
+colorbar
